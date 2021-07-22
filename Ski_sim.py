@@ -86,8 +86,8 @@ leftTurnRatio = int((rightSkiLeft/(leftSkiLeft + rightSkiLeft))*100)
 rightTurnRatio = int((leftSkiRight/(leftSkiRight + rightSkiRight))*100)
 
 turn_threshold = 55
-ski_symmetry_upper_threshold = 53
-ski_symmetry_lower_threshold = 47
+ski_symmetry_upper_threshold = 52
+ski_symmetry_lower_threshold = 48
 
 # left turn
 if rightSkiLeft > turn_threshold:
