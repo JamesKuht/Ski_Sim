@@ -1,16 +1,17 @@
-# Online Python compiler (interpreter) to run Python online.
-# Write Python 3 code in this online editor and run it.
-# Get started with interactive Python!
-# Supports Python Modules: builtins, math,pandas, scipy 
-# matplotlib.pyplot, numpy, operator, processing, pygal, random, 
-# re, string, time, turtle, urllib.request
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import scipy as sp
 import matplotlib as mpl
 
-# Create a pandas dataframe which has all of the sensor data in it, normalised to 100
+#### Preparation ####
+
+# For text formatting
+class color:
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
+
+# Ideally all sensor data would be normalised to an int within a range 0-100
 leftSkiFront = 40
 leftSkiLeft = 37
 leftSkiRight = 63
@@ -20,6 +21,7 @@ rightSkiLeft = 45
 rightSkiRight = 55
 rightSkiRear = 59
 
+# Pop the data into a pandas dataframe for speed/ease of heatmap creation
 data = {
 	'leftSkiLeftSide':[leftSkiFront, leftSkiLeft, leftSkiLeft, leftSkiRear],
 	'leftSkiRightSide':[leftSkiFront, leftSkiRight, leftSkiRight, leftSkiRear],
@@ -30,8 +32,8 @@ data = {
 
 df = pd.DataFrame(data=data)
 
-#### Build the heatmap plot - this website should help: \
-#### https://matplotlib.org/stable/gallery/images_contours_and_fields/image_annotated_heatmap.html
+
+#### Build the heatmap plot ####
 
 fig, ax = plt.subplots()
 cmap = mpl.cm.hot_r
@@ -51,7 +53,66 @@ ax.set_yticks(np.arange(4))
 cbar = fig.colorbar(heatplot, label='%weight on ski')
 tick_spacing = 1
 
-# Configuring the graph
+# Configuring & showing the graph
 plt.axis('off')
-
 plt.show()
+
+
+#### Offer advice on ski technique ####
+
+# Front-back weighting sensing - ensure the skier has weight on front of skis
+front_weight = leftSkiFront + rightSkiFront
+rear_weight = leftSkiRear + rightSkiRear
+frontback_percentage = int((rear_weight/(rear_weight + front_weight))*100)
+
+ideal_frontback_percentage = 50
+
+if frontback_percentage <= ideal_frontback_percentage:
+	message1 = 'Your front-back weight distribution is spot-on'
+else:
+	message1 = '{}% of your weight is on the back of your skis, you\
+ need to move your weight forward to make turning easier'.format(frontback_percentage)
+
+print(color.BOLD + "*Front-back balance* " + color.END + message1)
+
+# turning sensing of direction
+leftSkiLeft = int((leftSkiLeft/(leftSkiRight + leftSkiLeft))*100)
+rightSkiLeft = int((rightSkiLeft/(rightSkiRight + rightSkiLeft))*100)
+leftSkiRight = int((leftSkiRight/(leftSkiRight + leftSkiLeft))*100)
+rightSkiRight = int((rightSkiRight/(rightSkiRight + rightSkiLeft))*100)
+
+# sensing of ski symmetry (i.e. if you're turning left are both of your skis matched?)
+leftTurnRatio = int((rightSkiLeft/(leftSkiLeft + rightSkiLeft))*100)
+rightTurnRatio = int((leftSkiRight/(leftSkiRight + rightSkiRight))*100)
+
+turn_threshold = 55
+ski_symmetry_upper_threshold = 53
+ski_symmetry_lower_threshold = 47
+
+# left turn
+if rightSkiLeft > turn_threshold:
+	if leftTurnRatio > ski_symmetry_upper_threshold:
+		print(color.BOLD + "*Ski Angulation* " + color.END +\
+		"You're not angulating your inside (left) ski enough, this will reduce the \
+effectiveness of your turn")
+	elif leftTurnRatio < ski_symmetry_lower_threshold:
+		print(color.BOLD + "*Ski Angulation* " + color.END +\
+		"You're angulating your inside (left) ski too much, this will reduce your \
+balance during your turn")
+	else:
+		print(color.BOLD + "*Ski Angulation* " + color.END +\
+		"Your ski angulation is good whilst turning left")
+
+# right turn
+if leftSkiRight > turn_threshold:
+	if rightTurnRatio > ski_symmetry_upper_threshold:
+		print(color.BOLD + "*Ski Angulation* " + color.END + "You're not angulating your\
+		inside (right) ski enough, this will reduce the effectiveness of your turn")
+	elif rightTurnRatio < ski_symmetry_lower_threshold:
+		print(color.BOLD + "*Ski Angulation* " + color.END +\
+		"You're angulating your inside (right) ski too much, this will reduce your \
+balance during your turn")
+	else:
+		print(color.BOLD + "*Ski Angulation* " + color.END +\
+		"Your side-to-side ski balance is good whilst turning right")
+
