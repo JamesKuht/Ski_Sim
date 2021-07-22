@@ -67,3 +67,55 @@ rightSkiFront = 41
 rightSkiLeft = 47
 rightSkiRight = 53
 rightSkiRear = 59
+
+--------Left turns------
+
+// perfect smooth left turn
+leftSkiFront = 50
+leftSkiLeft = 56
+leftSkiRight = 44
+leftSkiRear = 50
+rightSkiFront = 50
+rightSkiLeft = 58
+rightSkiRight = 42
+rightSkiRear = 50
+
+// perfect hard left turn
+leftSkiFront = 50
+leftSkiLeft = 66
+leftSkiRight = 34
+leftSkiRear = 50
+rightSkiFront = 50
+rightSkiLeft = 70
+rightSkiRight = 30
+rightSkiRear = 50
+
+// smooth left with poor angulation of inside ski
+leftSkiFront = 50
+leftSkiLeft = 53
+leftSkiRight = 47
+leftSkiRear = 50
+rightSkiFront = 50
+rightSkiLeft = 58
+rightSkiRight = 42
+rightSkiRear = 50
+
+// hard left with poor angulation of inside ski
+leftSkiFront = 50
+leftSkiLeft = 58
+leftSkiRight = 42
+leftSkiRear = 50
+rightSkiFront = 50
+rightSkiLeft = 70
+rightSkiRight = 30
+rightSkiRear = 50
+
+// terrible (weight-back poorly balanced) left turn 
+leftSkiFront = 40
+leftSkiLeft = 53
+leftSkiRight = 47
+leftSkiRear = 60
+rightSkiFront = 41
+rightSkiLeft = 63
+rightSkiRight = 37
+rightSkiRear = 59
