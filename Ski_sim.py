@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import matplotlib as mpl
+import time
+import config
 
 #### Preparation ####
 
@@ -11,26 +13,16 @@ class color:
    UNDERLINE = '\033[4m'
    END = '\033[0m'
 
-# Ideally all sensor data would be normalised to an int within a range 0-100
-leftSkiFront = 40
-leftSkiLeft = 37
-leftSkiRight = 63
-leftSkiRear = 60
-rightSkiFront = 41
-rightSkiLeft = 45
-rightSkiRight = 55
-rightSkiRear = 59
-
-# Pop the data into a pandas dataframe for speed/ease of heatmap creation
 data = {
-	'leftSkiLeftSide':[leftSkiFront, leftSkiLeft, leftSkiLeft, leftSkiRear],
-	'leftSkiRightSide':[leftSkiFront, leftSkiRight, leftSkiRight, leftSkiRear],
+	'leftSkiLeftSide':[config.leftSkiFront, config.leftSkiLeft, config.leftSkiLeft, config.leftSkiRear],
+	'leftSkiRightSide':[config.leftSkiFront, config.leftSkiRight, config.leftSkiRight, config.leftSkiRear],
 	'gap':[0,0,0,0],
-	'rightSkiLeftSide':[rightSkiFront, rightSkiLeft, rightSkiLeft, rightSkiRear],
-	'rightSkiRightSide':[rightSkiFront, rightSkiRight, rightSkiRight, rightSkiRear]
+	'rightSkiLeftSide':[config.rightSkiFront, config.rightSkiLeft, config.rightSkiLeft, config.rightSkiRear],
+	'rightSkiRightSide':[config.rightSkiFront, config.rightSkiRight, config.rightSkiRight, config.rightSkiRear]
 }
 
 df = pd.DataFrame(data=data)
+print(df)
 
 
 #### Build the heatmap plot ####
@@ -45,10 +37,6 @@ ax.set_title("Heatmap of pressure on your Skis")
 ax.set_xticks(np.arange(5))
 ax.set_yticks(np.arange(4))
 
-# ... and label them with the respective list entries
-#ax.set_xticklabels(['       Left','Ski       ','','       Right', 'Ski       '])
-#ax.set_yticklabels(['Front','Middle','Middle','Rear'])
-
 # add heatbar
 cbar = fig.colorbar(heatplot, label='%weight on ski')
 tick_spacing = 1
@@ -61,8 +49,8 @@ plt.show()
 #### Offer advice on ski technique ####
 
 # Front-back weighting sensing - ensure the skier has weight on front of skis
-front_weight = leftSkiFront + rightSkiFront
-rear_weight = leftSkiRear + rightSkiRear
+front_weight = config.leftSkiFront + config.rightSkiFront
+rear_weight = config.leftSkiRear + config.rightSkiRear
 frontback_percentage = int((rear_weight/(rear_weight + front_weight))*100)
 
 ideal_frontback_percentage = 50
@@ -76,14 +64,14 @@ else:
 print(color.BOLD + "*Front-back balance* " + color.END + message1)
 
 # turning sensing of direction
-leftSkiLeft = int((leftSkiLeft/(leftSkiRight + leftSkiLeft))*100)
-rightSkiLeft = int((rightSkiLeft/(rightSkiRight + rightSkiLeft))*100)
-leftSkiRight = int((leftSkiRight/(leftSkiRight + leftSkiLeft))*100)
-rightSkiRight = int((rightSkiRight/(rightSkiRight + rightSkiLeft))*100)
+leftSkiLeft = int((config.leftSkiLeft/(config.leftSkiRight + config.leftSkiLeft))*100)
+rightSkiLeft = int((config.rightSkiLeft/(config.rightSkiRight + config.rightSkiLeft))*100)
+leftSkiRight = int((config.leftSkiRight/(config.leftSkiRight + config.leftSkiLeft))*100)
+rightSkiRight = int((config.rightSkiRight/(config.rightSkiRight + config.rightSkiLeft))*100)
 
 # sensing of ski symmetry (i.e. if you're turning left are both of your skis matched?)
-leftTurnRatio = int((rightSkiLeft/(leftSkiLeft + rightSkiLeft))*100)
-rightTurnRatio = int((leftSkiRight/(leftSkiRight + rightSkiRight))*100)
+leftTurnRatio = int((config.rightSkiLeft/(config.leftSkiLeft + config.rightSkiLeft))*100)
+rightTurnRatio = int((config.leftSkiRight/(config.leftSkiRight + config.rightSkiRight))*100)
 
 turn_threshold = 55
 ski_symmetry_upper_threshold = 52
@@ -115,4 +103,3 @@ balance during your turn")
 	else:
 		print(color.BOLD + "*Ski Angulation* " + color.END +\
 		"Your side-to-side ski balance is good whilst turning right")
-
