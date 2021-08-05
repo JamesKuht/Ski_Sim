@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import matplotlib as mpl
-import time
 import config
 
 #### Preparation ####
@@ -40,11 +39,6 @@ ax.set_yticks(np.arange(4))
 # add heatbar
 cbar = fig.colorbar(heatplot, label='%weight on ski')
 tick_spacing = 1
-
-# Configuring & showing the graph
-plt.axis('off')
-plt.show()
-
 
 #### Offer advice on ski technique ####
 
@@ -103,3 +97,7 @@ balance during your turn")
 	else:
 		print(color.BOLD + "*Ski Angulation* " + color.END +\
 		"Your side-to-side ski balance is good whilst turning right")
+
+# Configuring & showing the graph
+plt.axis('off')
+plt.show()
