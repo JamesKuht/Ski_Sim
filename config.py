@@ -15,7 +15,7 @@ if __name__ == '__main__':
     f = open('ski_sim_data.csv', 'w+')
     writer = csv.writer(f)
     writer.writerow(ski_area)
-    for i in range(2):
+    for i in range(1):
         ### balanced going roughly straight
         pressure = [49,48,52,51,51,51,49,49]
         writer.writerow(pressure)
@@ -37,92 +37,44 @@ if __name__ == '__main__':
         time.sleep(0.5)        
 
         ### smooth right with poor angulation of inside ski
-        pressure = [50,42,58,50,50,47,53,50]
+        pressure = [50,42,58,50,50,49,51,50]
         writer.writerow(pressure)
         time.sleep(0.5)        
 
         ### hard right with poor angulation of inside ski
-        leftSkiFront = 50
-        leftSkiLeft = 30
-        leftSkiRight = 70
-        leftSkiRear = 50
-        rightSkiFront = 50
-        rightSkiLeft = 42
-        rightSkiRight = 58
-        rightSkiRear = 50
-
-        time.sleep(0.5)
+        pressure = [50,30,70,50,50,46,54,50]
+        writer.writerow(pressure)
+        time.sleep(0.5)   
 
         ### terrible (weight-back poorly balanced) right turn
-        leftSkiFront = 40
-        leftSkiLeft = 37
-        leftSkiRight = 63
-        leftSkiRear = 60
-        rightSkiFront = 41
-        rightSkiLeft = 47
-        rightSkiRight = 53
-        rightSkiRear = 59
+        pressure = [40,37,63,60,41,47,53,59]
+        writer.writerow(pressure)
+        time.sleep(0.5)   
 
         ############### Left turns #################
-
-        time.sleep(0.5)
-
         ### perfect smooth left turn
-        leftSkiFront = 50
-        leftSkiLeft = 56
-        leftSkiRight = 44
-        leftSkiRear = 50
-        rightSkiFront = 50
-        rightSkiLeft = 58
-        rightSkiRight = 42
-        rightSkiRear = 50
-
-        time.sleep(0.5)
-
-        ### perfect hard left turn
-        leftSkiFront = 50
-        leftSkiLeft = 66
-        leftSkiRight = 34
-        leftSkiRear = 50
-        rightSkiFront = 50
-        rightSkiLeft = 70
-        rightSkiRight = 30
-        rightSkiRear = 50
-
-        time.sleep(0.5)
+        pressure = [50,56,44,50,50,58,42,50]
+        writer.writerow(pressure)
+        time.sleep(0.5)   
+ 
+         ### perfect hard left turn
+        pressure = [50,66,34,50,50,70,30,50]
+        writer.writerow(pressure)
+        time.sleep(0.5)   
 
         ### smooth left with poor angulation of inside ski
-        leftSkiFront = 50
-        leftSkiLeft = 53
-        leftSkiRight = 47
-        leftSkiRear = 50
-        rightSkiFront = 50
-        rightSkiLeft = 58
-        rightSkiRight = 42
-        rightSkiRear = 50
-
-        time.sleep(0.5)
+        pressure = [50,51,49,50,50,58,42,50]
+        writer.writerow(pressure)
+        time.sleep(0.5)   
 
         ### hard left with poor angulation of inside ski
-        leftSkiFront = 50
-        leftSkiLeft = 58
-        leftSkiRight = 42
-        leftSkiRear = 50
-        rightSkiFront = 50
-        rightSkiLeft = 70
-        rightSkiRight = 30
-        rightSkiRear = 50
-
-        time.sleep(0.5)
+        pressure = [50,56,44,50,50,70,30,50]
+        writer.writerow(pressure)
+        time.sleep(0.5)   
 
         ### terrible (weight-back poorly balanced) left turn
-        leftSkiFront = 40
-        leftSkiLeft = 53
-        leftSkiRight = 47
-        leftSkiRear = 60
-        rightSkiFront = 41
-        rightSkiLeft = 63
-        rightSkiRight = 37
-        rightSkiRear = 59
+        pressure = [40,53,47,60,41,63,37,59]
+        writer.writerow(pressure)
+        time.sleep(0.5)   
 
     f.close()
