@@ -12,16 +12,26 @@ class color:
    UNDERLINE = '\033[4m'
    END = '\033[0m'
 
-data = {
-	'leftSkiLeftSide':[config.leftSkiFront, config.leftSkiLeft, config.leftSkiLeft, config.leftSkiRear],
-	'leftSkiRightSide':[config.leftSkiFront, config.leftSkiRight, config.leftSkiRight, config.leftSkiRear],
-	'gap':[0,0,0,0],
-	'rightSkiLeftSide':[config.rightSkiFront, config.rightSkiLeft, config.rightSkiLeft, config.rightSkiRear],
-	'rightSkiRightSide':[config.rightSkiFront, config.rightSkiRight, config.rightSkiRight, config.rightSkiRear]
-}
+### This code calculates the number of lines in you csv file we can loop through them
+file = open('ski_sim_data.csv', 'r')
+reader = csv.reader(file)
+lines = len(list(reader)) - 1
+file.close()
 
-df = pd.DataFrame(data=data)
-print(df)
+csv_import = pd.read_csv('ski_sim_data.csv')
+
+### Loop through every line of the csv outputting for each
+for i in range(lines):
+	data = {
+		'leftSkiLeftSide':[csv_import['leftSkiFront'][i], csv_import['leftSkiLeft'][i], csv_import['leftSkiLeft'][i], csv_import['leftSkiRear'][i]],
+		'leftSkiRightSide':[config.leftSkiFront, config.leftSkiRight, config.leftSkiRight, config.leftSkiRear],
+		'gap':[0,0,0,0],
+		'rightSkiLeftSide':[config.rightSkiFront, config.rightSkiLeft, config.rightSkiLeft, config.rightSkiRear],
+		'rightSkiRightSide':[config.rightSkiFront, config.rightSkiRight, config.rightSkiRight, config.rightSkiRear]
+	}
+
+	df = pd.DataFrame(data=data)
+	print(df)
 
 
 #### Build the heatmap plot ####
