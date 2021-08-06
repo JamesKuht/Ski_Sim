@@ -7,7 +7,6 @@ import time
 import config
 
 #### Preparation ####
-
 # For text formatting
 class color:
    BOLD = '\033[1m'
@@ -23,10 +22,10 @@ def skiTutorFR(lFront, lRear, rFront, rRear):
 
 	ideal_frontback_percentage = 50
 	if frontback_percentage <= ideal_frontback_percentage:
-		message1 = 'Your front-back weight distribution is spot-on'
+		message1 = '*Front-back weight distribution* Spot-on'
 	else:
-		message1 = '{}% of your weight is on the back of your skis, you \
-need to move your weight forward to make turning easier'.format(frontback_percentage)
+		message1 = '*Front-back weight distribution* {}% of your weight is on the back of\n your skis,\
+ move your weight forward to make turning easier'.format(frontback_percentage)
 	return message1
 
 ### A function to offer tutoring on left-right angulation balance
@@ -36,13 +35,11 @@ def skiTutorLR(lLeft, lRight, rLeft, rRight):
 	leftSkiLeftNorm = int((lLeft/(lRight + lLeft))*100)
 	rightSkiLeftNorm = int((rLeft/(rRight + rLeft))*100)
 	leftSkiRightNorm = int((lRight/(lRight + lLeft))*100)
-	print("leftSkiRightNorm is: " + str(leftSkiRightNorm))
 	rightSkiRightNorm = int((rRight/(rRight + rLeft))*100)
 
 	# sensing of ski symmetry (i.e. if you're turning left are both of your skis matched?)
 	leftTurnRatio = int((rLeft/(lLeft + rLeft))*100)
 	rightTurnRatio = int((lRight/(lRight + rRight))*100)
-	print("rightTurnRatio is: " + str(rightTurnRatio))
 	turn_threshold = 55
 	ski_symmetry_upper_threshold = 52
 	ski_symmetry_lower_threshold = 48
@@ -50,21 +47,21 @@ def skiTutorLR(lLeft, lRight, rLeft, rRight):
 	# left turn
 	if rightSkiLeftNorm > turn_threshold:
 		if leftTurnRatio > ski_symmetry_upper_threshold:
-			message2 = "*Ski Angulation* You're not angulating your inside (left) ski enough, this will reduce the \
+			message2 = "*Ski Angulation* You're not angulating your inside (left) ski enough,\nthis will reduce the \
 effectiveness of your turn"
 		elif leftTurnRatio < ski_symmetry_lower_threshold:
-			message2 = "*Ski Angulation* You're angulating your inside (left) ski too much, this will reduce your \
+			message2 = "*Ski Angulation* You're angulating your inside (left) ski too much,\nthis will reduce your \
 balance during your turn"
 		else:
-			message2 = "Your ski angulation is good whilst turning left"
+			message2 = "*Ski Angulation* Your side-to-side ski balance is good whilst turning left"
 
 	# right turn
 	if leftSkiRightNorm > turn_threshold:
 		if rightTurnRatio > ski_symmetry_upper_threshold:
 			message2 = "*Ski Angulation* You're not angulating your \
-inside (right) ski enough, this will reduce the effectiveness of your turn"
+inside (right) ski enough,\nthis will reduce the effectiveness of your turn"
 		elif rightTurnRatio < ski_symmetry_lower_threshold:
-			message2 = "*Ski Angulation* You're angulating your inside (right) ski too much, this will reduce your \
+			message2 = "*Ski Angulation* You're angulating your inside (right) ski too much,\n thiswill reduce your \
 balance during your turn"
 		else:
 			message2 = "*Ski Angulation* Your side-to-side ski balance is good whilst turning right"
@@ -76,9 +73,8 @@ reader = csv.reader(file)
 lines = len(list(reader)) - 1
 file.close()
 
-csv_import = pd.read_csv('ski_sim_data.csv')
-
 ### Loop through every line of the csv outputting for each
+csv_import = pd.read_csv('ski_sim_data.csv')
 for i in range(lines):
 	leftSkiFront, leftSkiLeft, leftSkiRight, leftSkiRear, rightSkiFront, rightSkiLeft, rightSkiRight, rightSkiRear = csv_import['leftSkiFront'][i], csv_import['leftSkiLeft'][i], csv_import['leftSkiRight'][i], csv_import['leftSkiRear'][i], csv_import['rightSkiFront'][i], csv_import['rightSkiLeft'][i], csv_import['rightSkiRight'][i], csv_import['rightSkiRear'][i]
 	data = {
@@ -88,9 +84,13 @@ for i in range(lines):
 		'rightSkiLeftSide':[rightSkiFront, rightSkiLeft, rightSkiLeft, rightSkiRear],
 		'rightSkiRightSide':[rightSkiFront, rightSkiRight, rightSkiRight, rightSkiRear]
 	}
-
 	df = pd.DataFrame(data=data)
-	print(df)
+
+	#### Offer advice on ski technique ####
+	# Front-back weighting sensing - ensure the skier has weight on front of skis
+	frontRearAdvice = skiTutorFR(leftSkiFront, leftSkiRear, rightSkiFront, rightSkiRear)
+	# Turning advice
+	turningAdvice = skiTutorLR(leftSkiLeft,leftSkiRight, rightSkiLeft, rightSkiRight)
 
 	#### Build the heatmap plot ####
 	fig, ax = plt.subplots()
@@ -103,20 +103,13 @@ for i in range(lines):
 	ax.set_xticks(np.arange(5))
 	ax.set_yticks(np.arange(4))
 
-	# add heatbar
+	# add heatbar & text
 	cbar = fig.colorbar(heatplot, label='%weight on ski')
 	tick_spacing = 1
-
-	#### Offer advice on ski technique ####
-	# Front-back weighting sensing - ensure the skier has weight on front of skis
-	frontRearAdvice = skiTutorFR(leftSkiFront, leftSkiRear, rightSkiFront, rightSkiRear)
-	print(frontRearAdvice)
-
-	# Turning advice
-	turningAdvice = skiTutorLR(leftSkiLeft,leftSkiRight, rightSkiLeft, rightSkiRight)
-	print(turningAdvice)
+	plt.subplots_adjust(bottom=0.2)
+	plt.text(0.13, 0.12, frontRearAdvice, fontsize=10, transform=plt.gcf().transFigure)
+	plt.text(0.13, 0.04, turningAdvice, fontsize=10, transform=plt.gcf().transFigure)
 
 	# Configuring & showing the graph
 	plt.axis('off')
-	plt.show()
-	time.sleep(0.5)
+	plt.pause(1)
