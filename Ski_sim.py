@@ -3,8 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib as mpl
 import csv
-import time
-import config
+import cv2
 
 #### Preparation ####
 # For text formatting
@@ -67,6 +66,8 @@ balance during your turn"
 			message2 = "*Ski Angulation* Your side-to-side ski balance is good whilst turning right"
 	return message2
 
+
+
 ### This code calculates the number of lines in you csv file we can loop through them
 file = open('ski_sim_data.csv', 'r')
 reader = csv.reader(file)
@@ -74,6 +75,7 @@ lines = len(list(reader)) - 1
 file.close()
 
 ### Loop through every line of the csv outputting for each
+
 csv_import = pd.read_csv('ski_sim_data.csv')
 for i in range(lines):
 	leftSkiFront, leftSkiLeft, leftSkiRight, leftSkiRear, rightSkiFront, rightSkiLeft, rightSkiRight, rightSkiRear = csv_import['leftSkiFront'][i], csv_import['leftSkiLeft'][i], csv_import['leftSkiRight'][i], csv_import['leftSkiRear'][i], csv_import['rightSkiFront'][i], csv_import['rightSkiLeft'][i], csv_import['rightSkiRight'][i], csv_import['rightSkiRear'][i]
@@ -112,4 +114,5 @@ for i in range(lines):
 
 	# Configuring & showing the graph
 	plt.axis('off')
-	plt.pause(1)
+	plt.pause(0.11)
+	plt.close()

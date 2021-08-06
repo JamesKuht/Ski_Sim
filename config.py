@@ -5,16 +5,45 @@ import csv
 ### This bit allows a simple import into Ski_sim for testing purposes when running config.py simply as an import
 ### balanced going roughly straight
 ski_area = ['leftSkiFront', 'leftSkiLeft', 'leftSkiRight', 'leftSkiRear', 'rightSkiFront', 'rightSkiLeft', 'rightSkiRight', 'rightSkiRear']
-pressure = [49, 48, 52, 51, 51, 51, 49, 49]
+pressure = [50,50,50,50,50,50,50,50]
+
+# A function which creates a perfectly balanced turn
+def nice_turn(pressures):
+    #left turn initiation
+    for i in range(10):
+        pressure[1] += 2
+        pressure[2] -= 2
+        pressure[5] += 2
+        pressure[6] -= 2
+        writer.writerow(pressure)
+    #left turn finish into right turn initiation
+    for i in range(20):
+        pressure[1] -= 2
+        pressure[2] += 2
+        pressure[5] -= 2
+        pressure[6] += 2
+        writer.writerow(pressure)
+    #right turn finish
+    for i in range(10):
+        pressure[1] += 2
+        pressure[2] -= 2
+        pressure[5] += 2
+        pressure[6] -= 2
+        writer.writerow(pressure)
 
 ### This is the main program, if this program is run as the main program (i.e. 'python config.py')
 if __name__ == '__main__':
     # w+ mode 'truncates' the file - i.e. deletes everything inside it
     f = open('ski_sim_data.csv', 'w+')
     f.close()
-    f = open('ski_sim_data.csv', 'w+')
+    f = open('ski_sim_data.csv', 'w')
     writer = csv.writer(f)
     writer.writerow(ski_area)
+    
+    for i in range(2):
+        nice_turn(pressure)
+    
+    # Some example values
     for i in range(1):
         ### balanced going roughly straight
         pressure = [49,48,52,51,51,51,49,49]
