@@ -1,10 +1,11 @@
 import cv2
 import time
 
-### Play the ski video
+### Function to play the ski video
 def play_videoFile(filePath,mirror=False):
 	cap = cv2.VideoCapture(filePath)
-	cv2.namedWindow('Video of skiier', cv2.WINDOW_AUTOSIZE)
+	cv2.namedWindow('Video of skiier', cv2.WINDOW_NORMAL)
+	cv2.moveWindow('Video of skiier', 550, 30)
 	while True:
 		ret_val, frame = cap.read()
 
@@ -16,5 +17,6 @@ def play_videoFile(filePath,mirror=False):
 			break # esc to quit
 	cv2.destroyAllWindows
 
+# The delay is simply to sync it up with the Ski_sim.py file
 time.sleep(0.5)
 play_videoFile('Ski_video.mp4')

@@ -3,14 +3,6 @@ import pandas as pd
 import numpy as np
 import matplotlib as mpl
 import csv
-import cv2
-
-#### Preparation ####
-# For text formatting
-class color:
-   BOLD = '\033[1m'
-   UNDERLINE = '\033[4m'
-   END = '\033[0m'
 
 ###Functions
 ## A function to offer tutoring on front-rear weight balance
@@ -66,16 +58,13 @@ balance during your turn"
 			message2 = "*Ski Angulation* Your side-to-side ski balance is good whilst turning right"
 	return message2
 
-
-
 ### This code calculates the number of lines in you csv file we can loop through them
 file = open('ski_sim_data.csv', 'r')
 reader = csv.reader(file)
 lines = len(list(reader)) - 1
 file.close()
 
-### Loop through every line of the csv outputting for each
-
+### Loop through every line of the csv outputting a data frame for each
 csv_import = pd.read_csv('ski_sim_data.csv')
 for i in range(lines):
 	leftSkiFront, leftSkiLeft, leftSkiRight, leftSkiRear, rightSkiFront, rightSkiLeft, rightSkiRight, rightSkiRear = csv_import['leftSkiFront'][i], csv_import['leftSkiLeft'][i], csv_import['leftSkiRight'][i], csv_import['leftSkiRear'][i], csv_import['rightSkiFront'][i], csv_import['rightSkiLeft'][i], csv_import['rightSkiRight'][i], csv_import['rightSkiRear'][i]
@@ -105,14 +94,14 @@ for i in range(lines):
 	ax.set_xticks(np.arange(5))
 	ax.set_yticks(np.arange(4))
 
-	# add heatbar & text
+	# add heatbar & tutorial text
 	cbar = fig.colorbar(heatplot, label='%weight on ski')
 	tick_spacing = 1
 	plt.subplots_adjust(bottom=0.2)
 	plt.text(0.13, 0.12, frontRearAdvice, fontsize=10, transform=plt.gcf().transFigure)
 	plt.text(0.13, 0.04, turningAdvice, fontsize=10, transform=plt.gcf().transFigure)
 
-	# Configuring & showing the graph
+	# Configuring & showing the graph - counterintuitively plt.pause does the showing of the graph
 	plt.axis('off')
 	plt.pause(0.11)
 	plt.close()
